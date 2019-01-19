@@ -19,6 +19,7 @@ def get_document(title, lang):
     rows = cur.fetchall()
     articleArray=None
     for row in rows:
+        print(row[0])
         articleArray=json.loads(row[0])
     print(articleArray)
     for i in range(len(articleArray)):
@@ -34,12 +35,13 @@ def get_document(title, lang):
 @app.route('/documents/<string:title>', methods=['POST'])
 def post_document(title):
     print('you are trying to post : '+ title)
+    article=str(request.get_json()['article'])
+    article=article.replace("'",'"')
+    print(article)
     conn = sqlite3.connect("res/documents.db")
     cur= conn.cursor()
     sql = "INSERT INTO wiki VALUES (?,?, ?)"
     now = int(time.time())
-    article = str(request.get_json()['article'])
-    print('article: '+article)
     cur.execute(sql, (title, now, article))
     conn.commit()
     conn.close()
