@@ -28,8 +28,11 @@
 
 # REST API
 1. GET /documents/:title/:lang 
-2. POST /documents/:title/:lang
-> example: GET http://localhost:3000/documents/후추/ko
+2. POST /documents/:title
+3. GET /documents/:title/versions
+4. GET /documents/:title/versions/:version
+5. GET /documents/:title/versions/:version/:lang
+> example: GET http://localhost/documents/후추/ko
 # Supported Language
 Every language available in GCP Translation API is supported
 Avaliable (Language Code / Language) set can be seen in the link below.

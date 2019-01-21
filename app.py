@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify, Response
 import json, os, requests, uuid, sqlite3, datetime, time
 from google.cloud import translate
 app = Flask(__name__)
@@ -31,7 +31,54 @@ def get_document(title, lang):
     result = ' '.join(articleArray)
     print(result)
     conn.close()
-    return result
+    return jsonify({"result":result})
+
+@app.route('/documents/<string:title>/versions', methods=['GET'])
+def get_all_version(title):
+    print('get every versions of : '+ title)
+    conn = sqlite3.connect("res/documents.db")
+    cur= conn.cursor()
+    sql = "SELECT time FROM wiki WHERE title = ?"
+    cur.execute(sql, (title,))
+    rows = cur.fetchall()
+    versions=[]
+    for row in rows:
+        versions.append(row[0])
+    return Response(json.dumps(versions),  mimetype='application/json')
+
+@app.route('/documents/<string:title>/versions/<int:version>', methods=['GET'])
+def get_raw_version(title, version):
+    print('get'+str(version)+ 'th versions of : '+ title)
+    conn = sqlite3.connect("res/documents.db")
+    cur= conn.cursor()
+    sql = "SELECT article FROM wiki WHERE title = ? AND time = ?"
+    cur.execute(sql, (title,version,))
+    rows = cur.fetchall()
+    result=rows[0][0]
+    print(result)
+    return jsonify({"result":result})
+@app.route('/documents/<string:title>/versions/<int:version>/<string:lang>', methods=['GET'])
+def get_rendered_version(title, version, lang):
+    print('you are trying to get : '+ title)
+    conn = sqlite3.connect("res/documents.db")
+    cur= conn.cursor()
+    sql = "SELECT article FROM wiki WHERE title = ? AND time = ?"
+    cur.execute(sql, (title,version,))
+    rows = cur.fetchall()
+    articleArray=None
+    for row in rows:
+        print(row[0])
+        articleArray=json.loads(row[0])
+    print(articleArray)
+    for i in range(len(articleArray)):
+        if articleArray[i]['lang']==lang:
+            articleArray[i] = articleArray[i]['text']
+        else :
+            articleArray[i] = gTranslate(articleArray[i]['text'], lang)
+    result = ' '.join(articleArray)
+    print(result)
+    conn.close()
+    return jsonify({"result":result})
 @app.route('/documents/<string:title>', methods=['POST'])
 def post_document(title):
     print('you are trying to post : '+ title)
@@ -49,7 +96,7 @@ def post_document(title):
 
 def gTranslate(inText, lang):
     text =u'{}'.format(inText)
-    translate_client = translate.Client()
+    translate_client = translate.Client().from_service_account_json('gcpkey.json')
     target = lang
     translation = translate_client.translate(
         text,
