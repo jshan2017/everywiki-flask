@@ -33,7 +33,7 @@ def get_document(title, lang):
     conn.close()
     return jsonify({"result":result})
 @app.route('/documents/<string:title>/<string:lang>/raw', methods=['GET'])
-def get_raw_document(title):
+def get_raw_document(title, lang):
     print('get raw versions of : '+ title)
     conn = sqlite3.connect("res/documents.db")
     cur= conn.cursor()
@@ -54,7 +54,8 @@ def post_document(title):
     cur= conn.cursor()
     sql = "INSERT INTO wiki VALUES (?,?, ?)"
     now = int(time.time())
-    cur.execute(sql, (title, now, article))
+    translated_title = gTranslateTitle(title)
+    cur.execute(sql, (translated_title, now, article))
     conn.commit()
     conn.close()
     return 'success posting'
@@ -115,6 +116,21 @@ def gTranslate(inText, lang):
         text,
         target_language=target)
     return u'{}'.format(translation['translatedText'])
+
+def gTranslateTitle(title):
+    allLangTitle=u''
+    print('gtt')
+    langs=['ko','zh','es','en','hi','ar','pt','bn','ru','ja','pa','de']
+    for i in range(len(langs)):
+        text =u'{}'.format(title)
+        translate_client = translate.Client().from_service_account_json('gcpkey.json')
+        target = langs[i]
+        translation = translate_client.translate(
+        text,
+        target_language=target)
+        allLangTitle+= u'{};'.format(translation['translatedText'])
+    print('allltt: '+allLangTitle)
+    return allLangTitle
 
 if __name__ == '__main__':
     app.debug=True

@@ -27,7 +27,8 @@
     ]
 
 # REST API
-1. GET /documents/:title/:lang 
+0. GET /documents/:title/:lang
+1. GET /documents/:title/:lang/raw
 2. POST /documents/:title
 3. GET /documents/:title/versions
 4. GET /documents/:title/versions/:version
