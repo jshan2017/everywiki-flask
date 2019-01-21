@@ -14,13 +14,16 @@ def get_document(title, lang):
     print('you are trying to get : '+ title)
     conn = sqlite3.connect("res/documents.db")
     cur= conn.cursor()
-    sql = "SELECT article FROM wiki WHERE title LIKE ? ORDER BY time DESC LIMIT 1"
+    #getting content
+    sql = "SELECT * FROM wiki WHERE title LIKE ? ORDER BY time DESC LIMIT 1"
     cur.execute(sql, ('%'+title+'%',))
     rows = cur.fetchall()
     articleArray=None
+    langTitle=None
     for row in rows:
-        print(row[0])
-        articleArray=json.loads(row[0])
+        print('row0:'+str(row))
+        articleArray=json.loads(row[2])
+        langTitle = json.loads(row[0])[lang]
     print(articleArray)
     for i in range(len(articleArray)):
         if articleArray[i]['lang']==lang:
@@ -29,20 +32,20 @@ def get_document(title, lang):
             articleArray[i] = gTranslate(articleArray[i]['text'], lang)
     #print(articleArray)
     result = ' '.join(articleArray)
-    print(result)
     conn.close()
-    return jsonify({"result":result})
+    return jsonify({"title":langTitle, "result":result})
 @app.route('/documents/<string:title>/<string:lang>/raw', methods=['GET'])
 def get_raw_document(title, lang):
     print('get raw versions of : '+ title)
     conn = sqlite3.connect("res/documents.db")
     cur= conn.cursor()
-    sql = "SELECT article FROM wiki WHERE title LIKE ? ORDER BY time DESC LIMIT 1"
+    sql = "SELECT * FROM wiki WHERE title LIKE ? ORDER BY time DESC LIMIT 1"
     cur.execute(sql, ('%'+title+'%',))
     rows = cur.fetchall()
-    result=rows[0][0]
+    langTitle = json.loads(rows[0][0])[lang]
+    result=rows[0][2]
     print(result)
-    return jsonify({"result":result})
+    return jsonify({"title": langTitle, "result":result})
 
 @app.route('/documents/<string:title>', methods=['POST'])
 def post_document(title):
@@ -89,13 +92,15 @@ def get_rendered_version(title, version, lang):
     print('you are trying to get : '+ title)
     conn = sqlite3.connect("res/documents.db")
     cur= conn.cursor()
-    sql = "SELECT article FROM wiki WHERE title LIKE ? AND time = ?"
+    sql = "SELECT * FROM wiki WHERE title LIKE ? AND time = ?"
     cur.execute(sql, ('%'+title+'%',version,))
     rows = cur.fetchall()
     articleArray=None
+    langTitle=None
     for row in rows:
         print(row[0])
-        articleArray=json.loads(row[0])
+        articleArray=json.loads(row[2])
+        langTitle = json.loads(row[0])[lang]
     print(articleArray)
     for i in range(len(articleArray)):
         if articleArray[i]['lang']==lang:
@@ -105,7 +110,7 @@ def get_rendered_version(title, version, lang):
     result = ' '.join(articleArray)
     print(result)
     conn.close()
-    return jsonify({"result":result})
+    return jsonify({"title":langTitle, "result":result})
 
 
 def gTranslate(inText, lang):
@@ -118,7 +123,7 @@ def gTranslate(inText, lang):
     return u'{}'.format(translation['translatedText'])
 
 def gTranslateTitle(title):
-    allLangTitle=u''
+    allLangTitle={}
     print('gtt')
     langs=['ko','zh','es','en','hi','ar','pt','bn','ru','ja','pa','de']
     for i in range(len(langs)):
@@ -128,9 +133,11 @@ def gTranslateTitle(title):
         translation = translate_client.translate(
         text,
         target_language=target)
-        allLangTitle+= u'{};'.format(translation['translatedText'])
-    print('allltt: '+allLangTitle)
-    return allLangTitle
+        allLangTitle[langs[i]] = u'{}'.format(translation['translatedText'])
+    output = str(allLangTitle)
+    print('allttt: '+output)
+    output=output.replace("'",'"')
+    return output
 
 if __name__ == '__main__':
     app.debug=True

@@ -1,11 +1,22 @@
 # Summary of documents.db structure.
 1. Every Document is stored in only one table named "wiki"
 2. Each row represents each version of the document.
-3. The first column:title:text reperesents title of the document which must be in Korean.
+3. The first column:title:text reperesents title of the document in the form of title-JSONobject.
 4. The second column:time:integer represents time(format : Unix Time) of the version.
 5. The third column:article:text represents string converted form of contents-JSONArray.
 6. Each content of the contents-JSONArray should be aligned in order of text flow.
+# Sample of title-JSONObject 
+    {
+        "ko": "축구",
+        "zh": "足球",
+        "es": "fútbol",
+        "en": "soccer",
+        
+        ..
 
+        "de": "Fußball"
+
+    }
 # Sample of contents-JSONArray
     [    
         {
@@ -35,6 +46,9 @@
 5. GET /documents/:title/versions/:version/:lang
 > example: GET http://localhost/documents/후추/ko
 # Supported Language
-Every language available in GCP Translation API is supported
+
+Every language available in GCP Translation API is supported in backend.
 Avaliable (Language Code / Language) set can be seen in the link below.
 > https://cloud.google.com/translate/docs/languages
+Languages following are supported in frontend.
+[ko, zh, es, en, hi, ar, pt, bn, ru, ja, pa, de]
