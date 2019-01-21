@@ -5,6 +5,7 @@
 4. The second column:time:integer represents time(format : Unix Time) of the version.
 5. The third column:article:text represents string converted form of contents-JSONArray.
 6. Each content of the contents-JSONArray should be aligned in order of text flow.
+7. The fourth column:cache:text represents translated result cache in the form of contents-JSONArray
 # Sample of title-JSONObject 
     {
         "ko": "축구",

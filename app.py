@@ -21,19 +21,15 @@ def get_document(title, lang):
     articleArray=None
     langTitle=None
     for row in rows:
-        print('row0:'+str(row))
-        articleArray=json.loads(row[2])
+
+        articleArray=json.loads(row[3])
+        print('arti@@@@'+str(articleArray))
         langTitle = json.loads(row[0])[lang]
-    print(articleArray)
-    for i in range(len(articleArray)):
-        if articleArray[i]['lang']==lang:
-            articleArray[i] = articleArray[i]['text']
-        else :
-            articleArray[i] = gTranslate(articleArray[i]['text'], lang)
-    #print(articleArray)
-    result = ' '.join(articleArray)
     conn.close()
-    return jsonify({"title":langTitle, "result":result})
+    for i in range(len(articleArray)):
+        if articleArray[i]["lang"]==lang:
+            return jsonify({"title":langTitle, "result":articleArray[i]["text"]})
+    
 @app.route('/documents/<string:title>/<string:lang>/raw', methods=['GET'])
 def get_raw_document(title, lang):
     print('get raw versions of : '+ title)
@@ -50,15 +46,30 @@ def get_raw_document(title, lang):
 @app.route('/documents/<string:title>', methods=['POST'])
 def post_document(title):
     print('you are trying to post : '+ title)
-    article=str(request.get_json()['article'])
+    articlejson = request.get_json()['article']
+    #
+    langs=["ko","zh","es","en","hi","ar","pt","bn","ru","ja","pa","de"]
+    cachejson = []
+    print("now start making cache")
+    for i in range(len(langs)):
+        obj={"lang": langs[i]}
+        objtext=""
+        for j in range(len(articlejson)):
+            objtext += gTranslate(articlejson[j]["text"], langs[i]) 
+            objtext += " "
+        obj["text"]=objtext
+        cachejson.append(obj)
+    cachestr=str(cachejson).replace("'",'"')
+    #
+    article=str(articlejson)
     article=article.replace("'",'"')
     print(article)
     conn = sqlite3.connect("res/documents.db")
     cur= conn.cursor()
-    sql = "INSERT INTO wiki VALUES (?,?, ?)"
+    sql = "INSERT INTO wiki VALUES (?, ?, ?, ?)"
     now = int(time.time())
     translated_title = gTranslateTitle(title)
-    cur.execute(sql, (translated_title, now, article))
+    cur.execute(sql, (translated_title, now, article, cachestr))
     conn.commit()
     conn.close()
     return 'success posting'
