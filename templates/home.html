@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head style="	background-image: linear-gradient(to bottom, rgba(50, 195, 199, 0.75), rgba(28, 60, 112, 1));	background-position: top left;	background-size: 100%;	">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Coiny" rel="stylesheet">
+  <link rel="stylesheet" href="../static/theme.css" type="text/css">
+</head>
+<div id = "app">
+<body style="	background-image: linear-gradient(to bottom, rgba(50, 195, 199, 0.75), rgba(28, 60, 112, 1));	background-position: top left;background-repeat: no-repeat;	background-size: 100%;	">
+  <div class="py-5 text-center" style="">
+    <div class="container">
+      <div class="row" style="">
+        <div class="mx-auto col-md-6" style="">
+          <h3 class="display-1 text-light" contenteditable="true"><b>EveryWIKI</b></h3>
+          <h3 class="text-light">Read &amp; Write Anywhere</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 w-25 offset-md-2" style="">
+        <div class="form-group"><input type="text" class="form-control p-0 m-0" id="form1" style="" required="required" v-model="search"></div>
+      </div>
+      <div class="m-0 p-0" style=""><a class="btn btn-primary" v-on:click="getSearchValues"><i class="fa fa-fw fa-1x py-1 fa-search"></i></a></div>
+    </div>
+  </div>
+  <div class="py-5">
+  </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://unpkg.com/vue-router"></script>
+  <script>
+      var router = new VueRouter({
+        mode: 'history',
+        routes: []
+      });
+      const app = new Vue({
+      router,
+      el: "#app",
+      data: {
+          search: "갬성",
+          lang: "ko"
+      },
+      methods: {
+          getSearchValues(){
+              window.location.href = "document.html?lang="+this.lang+"&&title="+this.search;
+          }
+          
+      },
+    
+  
+    })
+    </script>
+</body>
+
+</html>

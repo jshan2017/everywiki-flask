@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, Response
+from flask import Flask, request, jsonify, Response, render_template
 import json, os, requests, uuid, sqlite3, datetime, time
 from google.cloud import translate
 app = Flask(__name__)
@@ -7,8 +7,8 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def hello_world():
-    return 'Helllll World!'
+def home():
+    return render_template('home.html')
 @app.route('/documents/<string:title>/<string:lang>', methods=['GET'])
 def get_document(title, lang):
     print('you are trying to get : '+ title)
@@ -23,7 +23,6 @@ def get_document(title, lang):
     for row in rows:
 
         articleArray=json.loads(row[3])
-        print('arti@@@@'+str(articleArray))
         langTitle = json.loads(row[0])[lang]
     conn.close()
     for i in range(len(articleArray)):
