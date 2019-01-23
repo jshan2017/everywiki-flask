@@ -7,8 +7,24 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def home():
+def render_home():
     return render_template('home.html')
+@app.route('/view')
+def render_document():
+    return render_template('document.html')
+@app.route('/editor')
+def render_input():
+    return render_template('input.html')
+@app.route('/log')
+def render_versions():
+    return render_template('versions.html')
+@app.route('/previous')
+def render_version():
+    return render_template('version.html')
+
+
+
+
 @app.route('/documents/<string:title>/<string:lang>', methods=['GET'])
 def get_document(title, lang):
     print('you are trying to get : '+ title)
@@ -150,6 +166,6 @@ def gTranslateTitle(title):
     return output
 
 if __name__ == '__main__':
-    app.debug=True
+    app.debug=False
     app.run(host='0.0.0.0', port=80)
 

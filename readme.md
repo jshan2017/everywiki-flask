@@ -45,7 +45,7 @@
 3. GET /documents/:title/versions
 4. GET /documents/:title/versions/:version
 5. GET /documents/:title/versions/:version/:lang
-> example: GET http://localhost/documents/후추/ko
+> example: GET http://143.248.38.50/documents/후추/ko
 # Supported Language
 
 Every language available in GCP Translation API is supported in backend.

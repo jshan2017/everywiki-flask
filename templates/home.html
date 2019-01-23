@@ -5,7 +5,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Coiny" rel="stylesheet">
   <link rel="stylesheet" href="../static/theme.css" type="text/css">
 </head>
 <div id = "app">
@@ -49,12 +48,12 @@
       router,
       el: "#app",
       data: {
-          search: "갬성",
+          search: "",
           lang: "ko"
       },
       methods: {
           getSearchValues(){
-              window.location.href = "document.html?lang="+this.lang+"&&title="+this.search;
+              window.location.href = "view?lang="+this.lang+"&&title="+this.search;
           }
           
       },

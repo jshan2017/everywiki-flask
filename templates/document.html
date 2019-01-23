@@ -31,37 +31,37 @@
     <div class="container">
       <div class="row">
         <div class="col-md-9">
-          <h1 class="mb-3 bg-primary text-light rounded-0">{{title}}</h1>
-          <p class="text-light">{{showcontent}}</p>
+          <h1 class="mb-3 bg-primary text-light rounded-0">${title}</h1>
+          <p class="text-light">${showcontent}</p>
         </div>
         <div class="" >
           <div class="btn-group">
               <a class="btn btn-secondary rounded-0 border-secondary shadow-none mr-2" href="#"  v-on:click="gotoInput"><i class="fa fa-fw fa-1x py-1 fa-edit rounded-0"></i></a>
             <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> Language </button>
             <div class="dropdown-menu">
-              <a class="dropdown-item" :href="'document.html?lang=ko&&title='+title">한국어(ko)</a>
+              <a class="dropdown-item" :href="'view?lang=ko&&title='+title">한국어(ko)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'document.html?lang=zh&&title='+title">汉语(zh)</a>
+              <a class="dropdown-item" :href="'view?lang=zh&&title='+title">汉语(zh)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'document.html?lang=es&&title='+title">Español(es)</a>
+              <a class="dropdown-item" :href="'view?lang=es&&title='+title">Español(es)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'document.html?lang=en&&title='+title">English(en)</a>
+              <a class="dropdown-item" :href="'view?lang=en&&title='+title">English(en)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'document.html?lang=hi&&title='+title">हिन्दी(hi)</a>
+              <a class="dropdown-item" :href="'view?lang=hi&&title='+title">हिन्दी(hi)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'document.html?lang=ar&&title='+title">اللغة العربية(ar)</a>
+              <a class="dropdown-item" :href="'view?lang=ar&&title='+title">اللغة العربية(ar)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'document.html?lang=pt&&title='+title">Português(pt)</a>
+              <a class="dropdown-item" :href="'view?lang=pt&&title='+title">Português(pt)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'document.html?lang=bn&&title='+title">বাংলা(bn)</a>
+              <a class="dropdown-item" :href="'view?lang=bn&&title='+title">বাংলা(bn)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'document.html?lang=ru&&title='+title">русский(ru)</a>
+              <a class="dropdown-item" :href="'view?lang=ru&&title='+title">русский(ru)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'document.html?lang=ja&&title='+title">日本語(ja)</a>
+              <a class="dropdown-item" :href="'view?lang=ja&&title='+title">日本語(ja)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'document.html?lang=pa&&title='+title">ਪੰਜਾਬੀ(pa)</a>
+              <a class="dropdown-item" :href="'view?lang=pa&&title='+title">ਪੰਜਾਬੀ(pa)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'document.html?lang=de&&title='+title">Deutsch(de)</a>
+              <a class="dropdown-item" :href="'view?lang=de&&title='+title">Deutsch(de)</a>
             </div>
           </div>
         </div>
@@ -71,8 +71,8 @@
       <div class="row">
         <div class="col-md-6"><a class="btn btn-light" href="#"><i class="fa fa-fw fa-1x py-1 fa-history" style="" v-on:click="gotoHistory"></i></a></div>
         <div class="col-md-6"><label class="btn btn-primary active">
-            <input type="radio" name="options" id="option1" autocomplete="off" checked="" v-on:click="renderOn"> Render On </label><label class="btn btn-primary">
-            <input type="radio" name="options" id="option2" autocomplete="off" v-on:click="renderOff"> Render Off </label></div>
+            <input type="radio" name="options" id="option1" autocomplete="off" checked="" v-on:click="renderOn"> Translate On </label><label class="btn btn-primary">
+            <input type="radio" name="options" id="option2" autocomplete="off" v-on:click="renderOff"> Translate Off </label></div>
       </div>
       <div class="row">
         <div class="col-md-12">
@@ -95,6 +95,7 @@
       routes: []
     });
     const app = new Vue({
+    delimiters:['${', '}'],
     router,
     el: "#app",
     data: {
@@ -109,13 +110,13 @@
     },
     methods: {
         getSearchValues(){
-          window.location.href = "document.html?lang="+this.lang+"&&title="+this.search;
+          window.location.href = "view?lang="+this.lang+"&&title="+this.search;
         },
         gotoInput(){
-          window.location.href = "input.html?title="+this.title+"&&lang="+this.lang;
+          window.location.href = "editor?title="+this.title+"&&lang="+this.lang;
         },
         gotoHistory(){
-          window.location.href = "versions.html?title="+this.title;
+          window.location.href = "log?title="+this.title;
         },
         renderOn(){
           this.showcontent = this.content.result;

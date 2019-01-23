@@ -57,6 +57,7 @@
       routes: []
     });
     const app = new Vue({
+    delimiters:['${', '}'], 
       router,
       el: "#app",
       data: {
@@ -71,10 +72,10 @@
               this.posts['article'] = JSON.parse(this.content);
               axios.post("http://143.248.38.50/documents/".concat(this.title), this.posts)
                   .then((response) => console.log(response));
-              window.location.href = "document.html?lang="+this.lang+"&&title="+this.title;
+              window.location.href = "view?lang="+this.lang+"&&title="+this.title;
         },
         getSearchValues(){
-          window.location.href = "document.html?lang="+this.lang+"&&title="+this.search;
+          window.location.href = "view?lang="+this.lang+"&&title="+this.search;
         }
       },
       mounted(){

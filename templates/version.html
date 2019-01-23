@@ -31,37 +31,37 @@
     <div class="container">
       <div class="row">
         <div class="col-md-9">
-          <h1 class="mb-3 bg-primary text-light rounded-0">{{title}}</h1>
-          <p class="text-light">{{showcontent}}</p>
+          <h1 class="mb-3 bg-primary text-light rounded-0">${title}</h1>
+          <p class="text-light">${showcontent}</p>
         </div>
         <div class="" >
           <div class="btn-group">
               <a class="btn btn-secondary rounded-0 border-secondary shadow-none mr-2" href="#"  v-on:click="gotoInput"><i class="fa fa-fw fa-1x py-1 fa-edit rounded-0"></i></a>
             <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> Language </button>
             <div class="dropdown-menu">
-              <a class="dropdown-item" :href="'version.html?lang=ko&&version='+version+'&&title='+title">한국어(ko)</a>
+              <a class="dropdown-item" :href="'previous?lang=ko&&version='+version+'&&title='+title">한국어(ko)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'version.html?lang=zh&&version='+version+'&&title='+title">汉语(zh)</a>
+              <a class="dropdown-item" :href="'previous?lang=zh&&version='+version+'&&title='+title">汉语(zh)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'version.html?lang=es&&version='+version+'&&title='+title">Español(es)</a>
+              <a class="dropdown-item" :href="'previous?lang=es&&version='+version+'&&title='+title">Español(es)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'version.html?lang=en&&version='+version+'&&title='+title">English(en)</a>
+              <a class="dropdown-item" :href="'previous?lang=en&&version='+version+'&&title='+title">English(en)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'version.html?lang=hi&&version='+version+'&&title='+title">हिन्दी(hi)</a>
+              <a class="dropdown-item" :href="'previous?lang=hi&&version='+version+'&&title='+title">हिन्दी(hi)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'version.html?lang=ar&&version='+version+'&&title='+title">اللغة العربية(ar)</a>
+              <a class="dropdown-item" :href="'previous?lang=ar&&version='+version+'&&title='+title">اللغة العربية(ar)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'version.html?lang=pt&&version='+version+'&&title='+title">Português(pt)</a>
+              <a class="dropdown-item" :href="'previous?lang=pt&&version='+version+'&&title='+title">Português(pt)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'version.html?lang=bn&&version='+version+'&&title='+title">বাংলা(bn)</a>
+              <a class="dropdown-item" :href="'previous?lang=bn&&version='+version+'&&title='+title">বাংলা(bn)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'version.html?lang=ru&&version='+version+'&&title='+title">русский(ru)</a>
+              <a class="dropdown-item" :href="'previous?lang=ru&&version='+version+'&&title='+title">русский(ru)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'version.html?lang=ja&&version='+version+'&&title='+title">日本語(ja)</a>
+              <a class="dropdown-item" :href="'previous?lang=ja&&version='+version+'&&title='+title">日本語(ja)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'version.html?lang=pa&&version='+version+'&&title='+title">ਪੰਜਾਬੀ(pa)</a>
+              <a class="dropdown-item" :href="'previous?lang=pa&&version='+version+'&&title='+title">ਪੰਜਾਬੀ(pa)</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="'version.html?lang=de&&version='+version+'&&title='+title">Deutsch(de)</a>
+              <a class="dropdown-item" :href="'previous?lang=de&&version='+version+'&&title='+title">Deutsch(de)</a>
             </div>
           </div>
         </div>
@@ -95,6 +95,7 @@
       routes: []
     });
     const app = new Vue({
+        delimiters:['${', '}'],
     router,
     el: "#app",
     data: {
@@ -110,10 +111,10 @@
     },
     methods: {
         getSearchValues(){
-          window.location.href = "document.html?lang="+this.lang+"&&title="+this.search;
+          window.location.href = "view?lang="+this.lang+"&&title="+this.search;
         },
         gotoInput(){
-          window.location.href = "input.html?title="+this.title+"&&lang="+this.lang;
+          window.location.href = "editor?title="+this.title+"&&lang="+this.lang;
         },
         renderOn(){
           this.showcontent = this.content.result;
